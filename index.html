@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EIGO 譯構 - Global Vision, Local Connection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: #000000;
+            overflow-x: hidden;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            z-index: 1000;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 3px;
+        }
+
+        .logo-subtext {
+            font-size: 0.9rem;
+            color: #00ffff;
+            font-weight: 600;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #cccccc;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #00ffff;
+        }
+
+        .language-switcher {
+            display: flex;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .lang-btn {
+            padding: 0.4rem 0.8rem;
+            background: transparent;
+            border: none;
+            color: #cccccc;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #00ffff 0%, #ff6b35 100%);
+            color: #000000;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at center, #001122 0%, #000000 70%);
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 45%, rgba(0, 255, 255, 0.03) 47%, rgba(0, 255, 255, 0.03) 53%, transparent 55%);
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+        }
+
+        .hero-brand {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            letter-spacing: 4px;
+        }
+
+        .hero-brand .e { color: #ffffff; }
+        .hero-brand .i { 
+            background: linear-gradient(180deg, #ffff00 0%, #00ff00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-brand .g { color: #ffffff; }
+        .hero-brand .o { color: #1e90ff; }
+
+        .hero-brand-text {
+            font-size: 1.5rem;
+            color: #00ffff;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #00ffff;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .hero-description {
+            font-size: 1.4rem;
+            color: #cccccc;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00ffff 0%, #ff6b35 100%);
+            color: #000000;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #00ffff;
+            border: 2px solid #00ffff;
+        }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            transform: translateY(-3px);
+        }
+
+        .section {
+            padding: 80px 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #00ffff 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title p {
+            font-size: 1.2rem;
+            color: #999999;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #111111 0%, #222222 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #00ffff, #ff6b35);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.1);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .card p {
+            color: #cccccc;
+            line-height: 1.6;
+        }
+
+        .mission {
+            background: #000000;
+        }
+
+        .insights {
+            background: linear-gradient(135deg, #001122 0%, #000000 100%);
+        }
+
+        .market-regions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .region {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 107, 53, 0.1));
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .region-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .solutions {
+            background: #000000;
+        }
+
+        .solution-card::before {
+            background: linear-gradient(90deg, #ff6b35, #00ffff);
+        }
+
+        .solution-card:hover {
+            border-color: rgba(255, 107, 53, 0.5);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.1);
+        }
+
+        .contact {
+            background: linear-gradient(135deg, #001122 0%, #000000 100%);
+            text-align: center;
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact h2 {
+            font-size: 2.5rem;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .contact p {
+            font-size: 1.2rem;
+            color: #cccccc;
+            margin-bottom: 3rem;
+            line-height: 1.7;
+        }
+
+        .contact-methods {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1.2rem 2rem;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 107, 53, 0.1));
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 25px;
+            text-decoration: none;
+            color: #00ffff;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            min-width: 180px;
+            justify-content: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-btn:hover {
+            color: #ff6b35;
+            border-color: rgba(255, 107, 53, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 255, 255, 0.2);
+        }
+
+        .contact-btn-icon {
+            font-size: 1.5rem;
+        }
+
+        .footer {
+            background: #000000;
+            border-top: 1px solid rgba(0, 255, 255, 0.1);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer p {
+            color: #666666;
+            font-size: 0.9rem;
+        }
+
+        .lang-content {
+            display: none;
+        }
+
+        .lang-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-brand {
+                font-size: 3rem;
+            }
+
+            .hero-description {
+                font-size: 1.2rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .contact-methods {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-btn {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <span class="logo-text">EIGO</span>
+                <span class="logo-subtext">譯構</span>
+            </div>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <div class="lang-content active" data-lang="zh">
+                        <a href="#mission">使命</a>
+                        <a href="#insights">市場洞察</a>
+                        <a href="#solutions">解決方案</a>
+                        <a href="#contact">聯繫</a>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <a href="#mission">Mission</a>
+                        <a href="#insights">Insights</a>
+                        <a href="#solutions">Solutions</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                </div>
+                <div class="language-switcher">
+                    <button class="lang-btn active" onclick="switchLanguage('zh')" data-lang="zh">中文</button>
+                    <button class="lang-btn" onclick="switchLanguage('en')" data-lang="en">EN</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="lang-content active" data-lang="zh">
+                <h1 class="hero-brand">
+                    <span class="e">E</span><span class="i">i</span><span class="g">G</span><span class="o">O</span>
+                </h1>
+                <p class="hero-brand-text">譯構</p>
+                <p class="hero-subtitle">Global Vision, Local Connection</p>
+                <p class="hero-description">我們整合技術與市場洞察，打破語言與文化藩籬，連接 iGaming、電競與遊戲市場</p>
+                <div class="hero-buttons">
+                    <a href="#insights" class="btn-primary">探索市場洞察</a>
+                    <a href="#contact" class="btn-secondary">開始您的旅程</a>
+                </div>
+            </div>
+
+            <div class="lang-content" data-lang="en">
+                <h1 class="hero-brand">
+                    <span class="e">E</span><span class="i">i</span><span class="g">G</span><span class="o">O</span>
+                </h1>
+                <p class="hero-subtitle">Global Vision, Local Connection</p>
+                <p class="hero-description">We integrate technology and market insights, breaking language and cultural barriers to connect iGaming, esports, and gaming markets</p>
+                <div class="hero-buttons">
+                    <a href="#insights" class="btn-primary">Discover Our Insights</a>
+                    <a href="#contact" class="btn-secondary">Start Your Journey</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mission section" id="mission">
+        <div class="container">
+            <div class="lang-content active" data-lang="zh">
+                <div class="section-title">
+                    <h2>從台灣到全球的<span class="highlight">技術橋樑</span></h2>
+                    <p>我們不只是 API 供應商，更是您邁向全球市場的戰略夥伴</p>
+                </div>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon">🔧</div>
+                        <h3>遊戲生態系統解決方案</h3>
+                        <p>從 API 整合到完整平台架構，專為 iGaming、電競與遊戲行業打造的一站式技術生態系統</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔍</div>
+                        <h3>市場策略與洞察</h3>
+                        <p>數據驅動的市場研究與策略，協助理解在地需求與商業環境</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🌐</div>
+                        <h3>在地化服務</h3>
+                        <p>跨文化專業服務，讓您的產品「全球佈局，在地共鳴」</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lang-content" data-lang="en">
+                <div class="section-title">
+                    <h2>From Taiwan to Global <span class="highlight">Technology Bridge</span></h2>
+                    <p>More than an API provider, we are your strategic partner for global market expansion</p>
+                </div>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon">🔧</div>
+                        <h3>Gaming Ecosystem Solutions</h3>
+                        <p>From API integration to complete platform architecture, a one-stop technical ecosystem designed for iGaming, esports, and gaming industries</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔍</div>
+                        <h3>Market Strategy & Intelligence</h3>
+                        <p>Data-driven market research and strategies helping understand local needs and business environments</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🌐</div>
+                        <h3>Localization Services</h3>
+                        <p>Cross-cultural expertise enabling your products to "Think Global, Resonate Local"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="insights section" id="insights">
+        <div class="container">
+            <div class="lang-content active" data-lang="zh">
+                <div class="section-title">
+                    <h2><span class="highlight">市場洞察</span></h2>
+                    <p>理解語言與文化，直達在地市場</p>
+                </div>
+                
+                <div class="market-regions">
+                    <div class="region">
+                        <span class="region-icon">🐉</span>
+                        東亞
+                    </div>
+                    <div class="region">
+                        <span class="region-icon">🌴</span>
+                        東南亞
+                    </div>
+                    <div class="region">
+                        <span class="region-icon">🪷</span>
+                        南亞
+                    </div>
+                    <div class="region">
+                        <span class="region-icon">🕌</span>
+                        中東
+                    </div>
+                    <div class="region">
+                        <span class="region-icon">🏰</span>
+                        歐洲
+                    </div>
+                    <div class="region">
+                        <span class="region-icon">🎭</span>
+                        拉美
+                    </div>
+                </div>
+                
+                <p style="text-align: center; font-size: 1.2rem; color: #cccccc; margin-top: 2rem;">
+                    深度解析玩家文化、法規環境、支付習慣與技術需求<br>
+                    幫助您的產品超越翻譯，達成真正的文化轉譯
+                </p>
+            </div>
+
+            <div class="lang-content" data-lang="en">
+                <div class="section-title">
+                    <h2><span class="highlight">Market Insights</span></h2>
+                    <p>Understanding language and culture to reach local markets</p>
+                </div>
+                
+                <div class="market-regions">
+                    <div class="region">
+                        <span class="region-icon">🐉</span>
+                        East Asia
+                    </div>
+                    <div class="region">
+                        <span class="region-icon">🌴</span>
+                        Southeast Asia
+                    </div>
+                    <div class="region">
+                        <span class="region-icon">🪷</span>
+                        South Asia
+                    </div>
+                    <div class="region">
+                        <span class="region-icon">🕌</span>
+                        Middle East
+                    </div>
+                    <div class="region">
+                        <span class="region-icon">🏰</span>
+                        Europe
+                    </div>
+                    <div class="region">
+                        <span class="region-icon">🎭</span>
+                        Latin America
+                    </div>
+                </div>
+                
+                <p style="text-align: center; font-size: 1.2rem; color: #cccccc; margin-top: 2rem;">
+                    Deep analysis of player culture, regulatory environments, payment habits, and technical requirements<br>
+                    Helping your products transcend translation to achieve true cultural transformation
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="solutions section" id="solutions">
+        <div class="container">
+            <div class="lang-content active" data-lang="zh">
+                <div class="section-title">
+                    <h2><span class="highlight">解決方案</span>矩陣</h2>
+                    <p>技術與洞察的完美融合</p>
+                </div>
+                <div class="grid">
+                    <div class="card solution-card">
+                        <div class="card-icon">⚡</div>
+                        <h3>API 整合</h3>
+                        <p>遊戲 API 整合，支援多平台與跨區域部署</p>
+                    </div>
+                    <div class="card solution-card">
+                        <div class="card-icon">🎯</div>
+                        <h3>市場策略</h3>
+                        <p>市場分析與策略建議，協助夥伴制定最佳決策</p>
+                    </div>
+                    <div class="card solution-card">
+                        <div class="card-icon">🗺️</div>
+                        <h3>在地化服務</h3>
+                        <p>深度在地化服務，涵蓋語言翻譯、文化適配與玩家體驗優化</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lang-content" data-lang="en">
+                <div class="section-title">
+                    <h2><span class="highlight">Solutions</span> Matrix</h2>
+                    <p>Perfect fusion of technology and insights</p>
+                </div>
+                <div class="grid">
+                    <div class="card solution-card">
+                        <div class="card-icon">⚡</div>
+                        <h3>API Integration</h3>
+                        <p>Gaming API integration supporting multi-platform and cross-regional deployment</p>
+                    </div>
+                    <div class="card solution-card">
+                        <div class="card-icon">🎯</div>
+                        <h3>Market Strategy</h3>
+                        <p>Market analysis and strategic recommendations helping partners make optimal decisions</p>
+                    </div>
+                    <div class="card solution-card">
+                        <div class="card-icon">🗺️</div>
+                        <h3>Localization Services</h3>
+                        <p>Deep localization services covering translation, cultural adaptation, and player experience optimization</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact section" id="contact">
+        <div class="container">
+            <div class="lang-content active" data-lang="zh">
+                <div class="contact-content">
+                    <h2>開始<span class="highlight">合作</span></h2>
+                    <p>準備好將您的產品推向全球市場了嗎？讓我們一起創造跨文化的成功故事</p>
+                    
+                    <div class="contact-methods">
+                        <a href="mailto:howdyhomie@eigo.la" class="contact-btn">
+                            <span class="contact-btn-icon">📧</span>
+                            發送郵件
+                        </a>
+                        
+                        <a href="https://t.me/HowdyZh" target="_blank" class="contact-btn">
+                            <span class="contact-btn-icon">📱</span>
+                            Telegram 聯繫
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lang-content" data-lang="en">
+                <div class="contact-content">
+                    <h2>Start <span class="highlight">Collaboration</span></h2>
+                    <p>Ready to bring your products to global markets? Let's create cross-cultural success stories together</p>
+                    
+                    <div class="contact-methods">
+                        <a href="mailto:howdyhomie@eigo.la" class="contact-btn">
+                            <span class="contact-btn-icon">📧</span>
+                            Send Email
+                        </a>
+                        
+                        <a href="https://t.me/HowdyZh" target="_blank" class="contact-btn">
+                            <span class="contact-btn-icon">📱</span>
+                            Telegram Contact
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 EIGO 譯構. All rights reserved. Global Vision, Local Connection.</p>
+        </div>
+    </footer>
+
+    <script>
+        function switchLanguage(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.lang-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`[data-lang="${lang}"]`).classList.add('active');
+            document.querySelectorAll(`[data-lang="${lang}"]`).forEach(content => content.classList.add('active'));
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            header.style.background = window.scrollY > 100 ? 'rgba(0, 0, 0, 0.98)' : 'rgba(0, 0, 0, 0.95)';
+        });
+    </script>
+</body>
+</html>
